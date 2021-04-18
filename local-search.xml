@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>This is the first blog</title>
+    <link href="/2021/04/18/The_first_blog/"/>
+    <url>/2021/04/18/The_first_blog/</url>
+    
+    <content type="html"><![CDATA[<h2 id="This-is-the-first-blog"><a href="#This-is-the-first-blog" class="headerlink" title="This is the first blog"></a>This is the first blog</h2><h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>学生时代马上结束了，服务器也到期了</p><p>又回到了刚接触网络安全的时候所采用的的低成本方式：Github+Hexo</p><p>博客用于记录自己的一些学习笔记，方便梳理自己的知识体系，同时也通过写博客来督促自己完成学习任务，减少一些DDL</p><p>去年一年准备各种考试，技术方面落下了不少，正在恶补的同时希望能够继续提升自己</p><p>That’s all………</p><h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p>基于对Material Design 风格的热爱，采用<a href="https://hexo.fluid-dev.com/docs/">Fluid</a>主题</p><p>主题 GitHub: <a href="https://github.com/fluid-dev/hexo-theme-fluid">https://github.com/fluid-dev/hexo-theme-fluid</a></p><p>主题文档：<a href="https://hexo.fluid-dev.com/docs/start/">https://hexo.fluid-dev.com/docs/start/</a></p><p>安装方便，Hexo 5.0.0 版本以上，通过 npm 直接安装：</p><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">npm install <span class="hljs-comment">--save hexo-theme-fluid</span><br></code></pre></td></tr></table></figure><p>博客目录下创建<code>_config.fluid.yml</code>文件，copy github的内容，根据自己的需要修改配置。</p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
